@@ -52,7 +52,7 @@ class AStar(BestFirstSearch):
 
         #ben
         f_score = ((1-self.heuristic_weight)*search_node.g_cost) + (self.heuristic_weight*self.heuristic_function.estimate(search_node.state))
-        raise f_score # TODO: remove this line!
+        return f_score # TODO: remove this line!
 
     def _open_successor_node(self, problem: GraphProblem, successor_node: SearchNode):
         """
@@ -74,4 +74,17 @@ class AStar(BestFirstSearch):
                   but still could be improved.
         """
         #ben
-        raise NotImplementedError  # TODO: remove this line!
+        if self.open.has_state(successor_node.state):
+            old_node = self.open.get_node_by_state(successor_node.state)
+            if old_node.g_cost > successor_node.g_cost:
+                self.open.extract_node(old_node)
+                self.open.push_node(successor_node)
+        elif self.close.has_state(successor_node.state):
+            old_node = self.close.get_node_by_state(successor_node.state)
+            if old_node.g_cost > successor_node.g_cost:
+                self.open.push_node(successor_node)
+                self.close.remove_node(old_node)
+        else:
+            self.open.push_node(successor_node)
+
+        ##raise NotImplementedError  # TODO: remove this line!
