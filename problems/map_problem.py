@@ -58,6 +58,7 @@ class MapProblem(GraphProblem):
         for link in junction_tuple:
             successor_state = MapState(link.target)
             yield OperatorResult(successor_state, link.distance)
+
         # TODO [Ex.10]:
         #  Read the documentation of this method in the base class `GraphProblem.expand_state_with_costs()`.
         #  Finish the implementation of this method.
@@ -70,7 +71,6 @@ class MapProblem(GraphProblem):
         #  Note: Generally, in order to check whether a variable is set to None you should use the expression:
         #        `my_variable_to_check is None`, and particularly do NOT use comparison (==).
 
-        yield OperatorResult(successor_state=MapState(self.target_junction_id), operator_cost=7)  # TODO: remove this line!
 
     def is_goal(self, state: GraphProblemState) -> bool:
         """
