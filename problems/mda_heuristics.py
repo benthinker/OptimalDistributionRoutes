@@ -83,16 +83,19 @@ class MDASumAirDistHeuristic(HeuristicFunction):
             You might want to use python's tuples comparing to that end.
              Example: (a1, a2) < (b1, b2) iff a1 < b1 or (a1 == b1 and a2 < b2).
         """
+
         assert isinstance(self.problem, MDAProblem)
         assert isinstance(state, MDAState)
-
+        currMinDist = 1000000000 #todo change this
         all_certain_junctions_in_remaining_ambulance_path = \
             self.problem.get_all_certain_junctions_in_remaining_ambulance_path(state)
-
-        if len(all_certain_junctions_in_remaining_ambulance_path) < 2:
-            return 0
-
-        raise NotImplementedError  # TODO: remove this line and complete the missing part here!
+        for location in all_certain_junctions_in_remaining_ambulance_path:
+            distance = self.cached_air_distance_calculator.get_air_distance_between_junctions(state.current_location, location)
+            if (currMinDist, currMinJunction.index) > (distance,location):
+                currMinDist = distance
+                currMinJunction = location
+        return currMinDist
+        # raise NotImplementedError  # TODO: remove this line and complete the missing part here!
 
 
 class MDAMSTAirDistHeuristic(HeuristicFunction):
