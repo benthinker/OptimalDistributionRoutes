@@ -51,8 +51,8 @@ class AStar(BestFirstSearch):
         """
 
         #ben
-        f_score = ((1-self.heuristic_weight)*search_node.g_cost) + (self.heuristic_weight*self.heuristic_function.estimate(search_node.state))
-        return f_score # TODO: remove this line!
+        f_score = ((1-self.heuristic_weight) * search_node.g_cost) + (self.heuristic_weight * self.heuristic_function.estimate(search_node.state))
+        return f_score
 
     def _open_successor_node(self, problem: GraphProblem, successor_node: SearchNode):
         """

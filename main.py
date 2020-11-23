@@ -172,14 +172,18 @@ def get_mda_problem(
 
 def basic_mda_problem_experiments():
     print()
-    print('Solve the MDA problem (small input, only distance objective, UniformCost).')
+    #print('Solve the MDA problem (small input, only distance objective, UniformCost).')
 
     small_mda_problem_with_distance_cost = get_mda_problem('small', MDAOptimizationObjective.Distance)
 
     # Ex.18
     # TODO: create an instance of `UniformCost`, solve the `small_mda_problem_with_distance_cost`
     #       with it and print the results.
-    exit()  # TODO: remove!
+    u_cost = UniformCost()
+    res = u_cost.solve_problem(small_mda_problem_with_distance_cost)
+    print(res)
+
+    #exit()  # TODO: remove!
 
 
 def mda_problem_with_astar_experiments():
