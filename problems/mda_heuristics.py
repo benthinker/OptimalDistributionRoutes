@@ -86,15 +86,37 @@ class MDASumAirDistHeuristic(HeuristicFunction):
 
         assert isinstance(self.problem, MDAProblem)
         assert isinstance(state, MDAState)
-        currMinDist = 1000000000 #todo change this
+
+        # while len(all_certain_junctions_in_remaining_ambulance_path) != 0:
+        #     indexArr = np.argsort([locationIndex.index for locationIndex in all_certain_junctions_in_remaining_ambulance_path])
+        #     disArr = [self.cached_air_distance_calculator.get_air_distance_between_junctions(state.current_location, locationDist) for locationDist in all_certain_junctions_in_remaining_ambulance_path]
+        #     disArr = disArr[indexArr]
+        #
+        #     bla = np.argmin(disArr)
+        #     minimalIndex = indexArr[bla]
+        #     pathLength += disArr[bla]
+        #
+        #     all_certain_junctions_in_remaining_ambulance_path.pop(minimalIndex)
+        #
+
         all_certain_junctions_in_remaining_ambulance_path = \
             self.problem.get_all_certain_junctions_in_remaining_ambulance_path(state)
-        for location in all_certain_junctions_in_remaining_ambulance_path:
-            distance = self.cached_air_distance_calculator.get_air_distance_between_junctions(state.current_location, location)
-            if (currMinDist, currMinJunction.index) > (distance,location):
-                currMinDist = distance
-                currMinJunction = location
-        return currMinDist
+        current_location = state.current_location
+        currMinJunction = current_location #David bug sus: if distances are the same, but the current index is lower
+        currMinDist = pow(2, 31)            #David: this is not how you code
+        pathLength = 0
+        while len(all_certain_junctions_in_remaining_ambulance_path) != 0:
+            for location in all_certain_junctions_in_remaining_ambulance_path:
+                distance = self.cached_air_distance_calculator.get_air_distance_between_junctions(current_location, location)
+                if (currMinDist, currMinJunction.index) > (distance, location.index):
+                    currMinDist = distance
+                    currMinJunction = location
+            all_certain_junctions_in_remaining_ambulance_path.pop(currMinJunction)
+            pathLength += currMinDist
+            current_location = currMinJunction
+
+        return pathLength
+        #
         # raise NotImplementedError  # TODO: remove this line and complete the missing part here!
 
 
