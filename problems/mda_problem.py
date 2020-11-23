@@ -369,4 +369,12 @@ class MDAProblem(GraphProblem):
             Use the method `self.get_reported_apartments_waiting_to_visit(state)`.
             Use python's `sorted(some_list, key=...)` function.
         """
-        raise NotImplementedError  # TODO: remove this line!
+
+        if isinstance(state, Laboratory) or isinstance(state, ApartmentWithSymptomsReport):
+            junction_state = state.location
+        else:
+            junction_state = state.current_location
+        reported_apartments = self.get_reported_apartments_waiting_to_visit(state)
+        junctions = [reported_apartment.location for reported_apartment in reported_apartments] + [junction_state]
+        return sorted(list(junctions), key=(lambda junction: junction.index))
+        #raise NotImplementedError  # TODO: remove this line!
