@@ -227,13 +227,15 @@ def mda_problem_with_weighted_astar_experiments():
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MDAMSTAirDistHeuristic`
     #       over the `small_mda_problem_with_distance_cost`.
-    exit()  # TODO: remove!
+    #exit()  # TODO: remove!
+    run_astar_for_weights_in_range(MDAMSTAirDistHeuristic,small_mda_problem_with_distance_cost)
 
     # Ex.30
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MDASumAirDistHeuristic`
     #       over the `moderate_mda_problem_with_distance_cost`.
-    exit()  # TODO: remove!
+    #exit()  # TODO: remove!
+    run_astar_for_weights_in_range(MDASumAirDistHeuristic,moderate_mda_problem_with_distance_cost)
 
 
 def monetary_cost_objectives_mda_problem_experiments():
