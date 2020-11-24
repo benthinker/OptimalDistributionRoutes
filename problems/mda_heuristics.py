@@ -202,6 +202,15 @@ class MDATestsTravelDistToNearestLabHeuristic(HeuristicFunction):
             """
             Returns the distance between `junction` and the laboratory that is closest to `junction`.
             """
-            return min(...)  # TODO: replace `...` with the relevant implementation.
+            return min([junction.calc_air_distance_from(laboratory.location) for laboratory
+                        in self.problem.problem_input.laboratories])
 
-        raise NotImplementedError  # TODO: remove this line!
+        closest_laboratory_to_state = air_dist_to_closest_lab(state.current_location)
+        tests_on_ambulance = state.get_total_nr_tests_taken_and_stored_on_ambulance()
+
+        total_cost = (tests_on_ambulance * closest_laboratory_to_state)
+        total_cost += sum([air_dist_to_closest_lab(apartment.location) * apartment.nr_roommates for apartment in
+                            self.problem.get_reported_apartments_waiting_to_visit(state)])
+        return total_cost
+
+        #raise NotImplementedError  # TODO: remove this line!
