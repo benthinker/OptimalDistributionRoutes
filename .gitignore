@@ -16,3 +16,8 @@ framework/__pycache__/consts.cpython-37.pyc
 framework/__pycache__/__init__.cpython-37.pyc
 .idea/misc.xml
 *.pyc
+.idea/misc.xml
+.idea/OptimalDistributionRoutes.iml
+problems/__pycache__/mda_heuristics.cpython-37.pyc
+problems/__pycache__/mda_problem.cpython-37.pyc
+main.py
