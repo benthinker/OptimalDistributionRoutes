@@ -359,6 +359,7 @@ class MDAProblem(GraphProblem):
                            .difference(state.tests_on_ambulance\
                                        .union(state.tests_transferred_to_lab))), key=(lambda apartment: apartment.report_id))
 
+
     def get_all_certain_junctions_in_remaining_ambulance_path(self, state: MDAState) -> List[Junction]:
         """
         This method returns a list of junctions that are part of the remaining route of the ambulance.
