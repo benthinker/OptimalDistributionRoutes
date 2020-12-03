@@ -65,26 +65,43 @@ class AnytimeAStar(GraphProblemSolver):
             #   but there is no solution using `low_heuristic_weight`.
             low_heuristic_weight = 0.5
             high_heuristic_weight = self.initial_high_heuristic_weight_bound
+            # TODO [Ex.45]:
+            #  Complete the missing part inside this loop.
+            #  Perform a binary search over the possible values of `heuristic_weight`.
+            #  In each iteration, create an AStar solver with:
+            #   (i)   the `heuristic_weight` set to the mid point of the current low & high binary search bound,
+            #   (ii)  the `max_nr_states_to_expand` set to `self.max_nr_states_to_expand_per_iteration`,
+            #   (iii) the `heuristic_function_type` set to `self.heuristic_function_type`,
+            #   and solve the given problem with it.
+            #  Don't forget to update `total_nr_expanded_states` and `max_nr_stored_states` (see how we've done
+            #   it above).
+            #  Update `low_heuristic_weight` and `high_heuristic_weight` according to the result of the AStar
+            #   in order the keep the invariant (mentioned above) satisfied.
+            #  You might need to use the field `is_solution_found` of the search result obtained from the AStar.
+            #  Update `best_solution` and `best_heuristic_weight` if needed. `best_solution` stores the solution
+            #   (SearchResult object) found with the best g-cost (use `solution_g_cost` field of SearchResult to
+            #   obtain the g-cost of a solution). Update iff the current inspected solution cost < the cost of
+            #   the best found solution so far.
+            #  Make sure to also read the big comment in the head of this class.
+
             while (high_heuristic_weight - low_heuristic_weight) > 0.01:
-                # TODO [Ex.45]:
-                #  Complete the missing part inside this loop.
-                #  Perform a binary search over the possible values of `heuristic_weight`.
-                #  In each iteration, create an AStar solver with:
-                #   (i)   the `heuristic_weight` set to the mid point of the current low & high binary search bound,
-                #   (ii)  the `max_nr_states_to_expand` set to `self.max_nr_states_to_expand_per_iteration`,
-                #   (iii) the `heuristic_function_type` set to `self.heuristic_function_type`,
-                #   and solve the given problem with it.
-                #  Don't forget to update `total_nr_expanded_states` and `max_nr_stored_states` (see how we've done
-                #   it above).
-                #  Update `low_heuristic_weight` and `high_heuristic_weight` according to the result of the AStar
-                #   in order the keep the invariant (mentioned above) satisfied.
-                #  You might need to use the field `is_solution_found` of the search result obtained from the AStar.
-                #  Update `best_solution` and `best_heuristic_weight` if needed. `best_solution` stores the solution
-                #   (SearchResult object) found with the best g-cost (use `solution_g_cost` field of SearchResult to
-                #   obtain the g-cost of a solution). Update iff the current inspected solution cost < the cost of
-                #   the best found solution so far.
-                #  Make sure to also read the big comment in the head of this class.
-                raise NotImplementedError   # TODO: remove this line!
+                heuristic_weight = low_heuristic_weight + (high_heuristic_weight - low_heuristic_weight) / 2
+                astar = AStar(self.heuristic_function_type, heuristic_weight,
+                              self.max_nr_states_to_expand_per_iteration)
+
+                weited_res = astar.solve_problem(problem)
+                total_nr_expanded_states += weited_res.nr_expanded_states
+                max_nr_stored_states = max(max_nr_stored_states, weited_res.max_nr_stored_states)
+
+                if weited_res.is_solution_found is True:
+                    high_heuristic_weight = heuristic_weight
+                    a = weited_res.solution_g_cost
+                    b = best_solution.solution_g_cost
+                    if a < b:
+                        best_solution = weited_res
+                        best_heuristic_weight = heuristic_weight
+                else:
+                    low_heuristic_weight = heuristic_weight
 
         self.solver_name = f'{self.__class__.solver_name} (h={best_solution.solver.heuristic_function.heuristic_name}, w={best_heuristic_weight:.3f})'
         return best_solution._replace(
